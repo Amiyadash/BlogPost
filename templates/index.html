@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<a>
+        <h2>Hi Amiya {{ name }}  working Successfully</h2>
+    {% for data in object_list %}
+        {% comment %}#HArd code for parameter (/posts/{{ data.id }}){% endcomment %}
+        {% comment %}{% url 'detail' id=data.id %}{% endcomment %}
+        {% comment %}{{ data.get_absolute_url }}{% endcomment %}
+        <a href="{{ data.get_absolute_url }}">{{ data.title }}</a><br>
+       {% comment %} <span style="color:goldenrod;">{{ data.content}}</span><br>
+        {{ data.timestamp }}<br>
+        {{ data.updated }}<br>
+        <span style="color:red;">{{ data.id }}</span><br>
+{% endcomment %}
+    {% endfor %}
+
+
+</body>
+</html>
