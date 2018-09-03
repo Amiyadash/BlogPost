@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from django.http import HttpResponse,HttpResponseRedirect
 from PostApp.models import Post
 from PostApp.forms import PostForm
@@ -10,10 +10,8 @@ def post_create(request):
     if form.is_valid():
         instance=form.save(commit=False)
         instance.save()
-        messages.success(request,"Successfully Posted")
+        messages.success(request," <a href='#'>Posted</a>",extra_tags="html_safe")
         return HttpResponseRedirect(instance.get_absolute_url())
-    else:
-        messages.error(request, "Not Posted")
     context_data={
         "form":form
     }
@@ -23,7 +21,7 @@ def post_details(request,id=None):
     instance =get_object_or_404(Post,id=id)
     context_data = {
         "instance":instance,
-        "name": "Details"
+        "title": instance.title,
     }
     return render(request, 'post_details.html',context_data)
 def post_update(request,id=None):
@@ -40,8 +38,12 @@ def post_update(request,id=None):
         "form":form
     }
     return render(request, 'post_form.html', context_data)
-def post_delete(request):
-    return HttpResponse("<h1>Delete</h1>")
+def post_delete(request,id=None):
+    instance = get_object_or_404(Post, id=id)
+    instance.delete()
+    messages.success(request,"Deleted")
+    return redirect('post:list')
+
 def post_list(request):
     queryset=Post.objects.all()
     # if request.user.is_authenticated():
