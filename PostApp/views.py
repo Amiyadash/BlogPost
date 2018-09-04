@@ -45,7 +45,7 @@ def post_delete(request,id=None):
     return redirect('post:list')
 
 def post_list(request):
-    queryset=Post.objects.all()
+    queryset=Post.objects.all().order_by("-updated")
     # if request.user.is_authenticated():
     #     context_data={
     #         "name":"User Authenticated"
